@@ -1,3 +1,4 @@
+const auth = require('../auth');
 const TABLE = 'users';
 
 module.exports = (injectedStore) => {
@@ -14,11 +15,20 @@ module.exports = (injectedStore) => {
     return store.get(TABLE, id);
   };
 
-  const upsert = (id, name) => {
+  const upsert = async (id, name, username, password) => {
     const user = {
       id,
       name,
+      username,
     };
+
+    if (username || password) {
+      await auth.upsert({
+        id,
+        username,
+        password
+      });
+    }
 
     return store.upsert(TABLE, user);
   };

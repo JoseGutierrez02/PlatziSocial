@@ -1,4 +1,5 @@
 const express = require('express');
+const secure = require('./secure');
 const response = require('../../../network/response');
 const Controller = require('./index');
 const router = express.Router();
@@ -26,9 +27,9 @@ router.get('/:id', (req, res) => {
 });
 
 router.post('/', (req, res) => {
-  const { id, name } = req.body;
+  const { id, name, username, password } = req.body;
 
-  Controller.upsert(id, name)
+  Controller.upsert(id, name, username, password)
     .then((data) => {
       response.success(req, res, data, 201);
     })
@@ -37,11 +38,11 @@ router.post('/', (req, res) => {
     });
 });
 
-router.put('/:id', (req, res) => {
+router.put('/:id', secure('update'), (req, res) => {
   const { id } = req.params;
-  const { name } = req.body;
+  const { name, username, password } = req.body;
 
-  Controller.upsert(id, name)
+  Controller.upsert(id, name, username, password)
     .then((data) => {
       response.success(req, res, data, 201);
     })
