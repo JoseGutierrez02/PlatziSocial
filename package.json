@@ -1,0 +1,16 @@
+{
+  "name": "platzisocial",
+  "version": "1.0.0",
+  "description": "A minimalist simple social network built in NodeJS",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon api/index.js"
+  },
+  "author": "Jose Gutierrez",
+  "license": "MIT",
+  "dependencies": {
+    "dotenv": "^9.0.1",
+    "express": "^4.17.1",
+    "swagger-ui-express": "^4.1.6"
+  }
+}
