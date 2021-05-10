@@ -1,5 +1,6 @@
 const jwt = require('jsonwebtoken');
 const config = require('../config');
+const error = require('../utils/error');
 const secret = config.jwt.secret;
 
 const sign = (data) => {
@@ -10,17 +11,17 @@ const verify = (token) => {
   try {
     return jwt.verify(token, secret)
   } catch (error) {
-    throw new Error(error.message)
+    throw error(error.message, 500);
   }
 };
 
 const getToken = (auth) => {
   if (!auth) {
-    throw new Error('There is no token');
+    throw error('There is no token', 500);
   }
 
   if(auth.indexOf('Bearer ') === -1) {
-    throw new Error('Invalid format');
+    throw error('Invalid format', 500);
   }
 
   let token = auth.replace('Bearer ', '');
@@ -42,7 +43,7 @@ const check = {
     console.log(decoded);
 
     if(decoded.id !== ownerId) {
-      throw new Error('You do not have enough permissions for this action');
+      throw error('You do not have enough permissions for this action', 401);
     }
   },
 };
