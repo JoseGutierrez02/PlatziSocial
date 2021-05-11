@@ -1,21 +1,19 @@
 const auth = require('../../../auth');
 
 module.exports = checkAuth = (action) => {
-  
-  const middleware = (req, _res, next) => {
+
+  const middleware = (req, res, next) => {
     switch(action) {
-      case 'update':
-        const ownerId = req.params.id;
-        auth.check.own(req, ownerId);
+      case 'insert':
+        auth.check.logged(req);
         next();
         break;
-      case 'follow':
+      case 'update':
         auth.check.logged(req);
         next();
         break;
       case 'delete':
-        const id = req.params.id;
-        auth.check.own(req, id);
+        auth.check.logged(req);
         next();
         break;
       default:

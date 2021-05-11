@@ -38,8 +38,13 @@ module.exports = (injectedStore) => {
     store.upsert(TABLE, authData);
   };
 
+  const remove = (id) => {
+    store.remove(TABLE, id);
+  };
+
   return {
     upsert,
     login,
+    remove,
   }
 };

@@ -16,48 +16,29 @@ router.get('/:id', (req, res, next) => {
   const { id } = req.params;
 
   Controller.get(id)
-  .then((data) => {
-    response.success(req, res, data, 200);
-  })
-  .catch(next);
-});
-
-router.post('/', (req, res, next) => {
-  const { name, username, password } = req.body;
-
-  Controller.upsert(name, username, password)
-    .then((data) => {
-      response.success(req, res, data, 201);
-    })
-    .catch(next);
-});
-
-router.post('/follow/:id', secure('follow'), (req, res, next) => {
-  const { id: userFrom } = req.user;
-  const { id: userTo } = req.params;
-
-  Controller.follow(userFrom, userTo)
-    .then((data) => {
-      response.success(req, res, data, 201);
-    })
-    .catch(next);
-});
-
-router.get('/:id/following', (req, res, next) => {
-  const { id } = req.params
-
-  Controller.following(id)
     .then((data) => {
       response.success(req, res, data, 200);
     })
     .catch(next);
 });
 
-router.put('/:id', secure('update'), (req, res, next) => {
-  const { id } = req.params;
-  const { name, username, password } = req.body;
+router.post('/', secure('insert'), (req, res, next) => {
+  const { id: userId } = req.user;
+  const { text } = req.body;
 
-  Controller.upsert(name, username, password, id)
+  Controller.upsert(userId, text)
+    .then((data) => {
+      response.success(req, res, data, 201);
+    })
+    .catch(next);
+});
+
+router.put('/:id', secure('update'), (req, res, next) => {
+  const { id: userId } = req.user;
+  const { id } = req.params;
+  const { text } = req.body;
+
+  Controller.upsert(userId, text, id)
     .then((data) => {
       response.success(req, res, data, 201);
     })
@@ -73,5 +54,6 @@ router.delete('/:id', secure('delete'), (req, res, next) => {
     })
     .catch(next);
 });
+
 
 module.exports = router;

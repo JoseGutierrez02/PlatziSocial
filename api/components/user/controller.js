@@ -21,9 +21,7 @@ module.exports = (injectedStore) => {
       username,
     };
 
-    if (id && typeof(id) === "number") {
-      user.id = String(id);
-    } else {
+    if (id) {
       user.id = id;
     }
 
@@ -54,11 +52,17 @@ module.exports = (injectedStore) => {
     return store.query('user_follow', query, join);
   };
 
+  const remove = (id) => {
+    auth.remove(id);
+    return store.remove(TABLE, id);
+  };
+
   return {
     list,
     get,
     upsert,
     follow,
     following,
+    remove,
   };
 };
