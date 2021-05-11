@@ -15,12 +15,17 @@ module.exports = (injectedStore) => {
     return store.get(TABLE, id);
   };
 
-  const upsert = async (id, name, username, password) => {
+  const upsert = async (name, username, password, id) => {
     const user = {
-      id,
       name,
       username,
     };
+
+    if (id && typeof(id) === "number") {
+      user.id = String(id);
+    } else {
+      user.id = id;
+    }
 
     if (username || password) {
       await auth.upsert({
@@ -33,9 +38,27 @@ module.exports = (injectedStore) => {
     return store.upsert(TABLE, user);
   };
 
+  const follow = (from, to) => {
+    const followData = {
+      user_from: String(from),
+      user_to: to
+    };
+
+    return store.upsert(`user_follow`, followData);
+  };
+
+  const following = (id) => {
+    const join = {};
+    join[TABLE] = 'user_to';
+    const query = { user_from: id };
+    return store.query('user_follow', query, join);
+  };
+
   return {
     list,
     get,
     upsert,
+    follow,
+    following,
   };
 };

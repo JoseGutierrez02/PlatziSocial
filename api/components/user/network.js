@@ -23,20 +23,41 @@ router.get('/:id', (req, res, next) => {
 });
 
 router.post('/', (req, res, next) => {
-  const { id, name, username, password } = req.body;
+  const { name, username, password } = req.body;
 
-  Controller.upsert(id, name, username, password)
+  Controller.upsert(name, username, password)
     .then((data) => {
       response.success(req, res, data, 201);
     })
     .catch(next);
 });
 
+router.post('/follow/:id', secure('follow'), (req, res, next) => {
+  const { id: userFrom } = req.user;
+  const { id: userTo } = req.params;
+
+  Controller.follow(userFrom, userTo)
+    .then((data) => {
+      response.success(req, res, data, 201);
+    })
+    .catch(next);
+});
+
+router.get('/:id/following', (req, res, next) => {
+  const { id } = req.params
+
+  Controller.following(id)
+    .then((data) => {
+      response.success(req, res, data, 200);
+    })
+    .catch(next);
+})
+
 router.put('/:id', secure('update'), (req, res, next) => {
   const { id } = req.params;
   const { name, username, password } = req.body;
 
-  Controller.upsert(id, name, username, password)
+  Controller.upsert(name, username, password, id)
     .then((data) => {
       response.success(req, res, data, 201);
     })
