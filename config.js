@@ -20,5 +20,14 @@ module.exports = {
   },
   postService: {
     port: process.env.POST_SRV_PORT || 3002,
-  }
+  },
+  cacheService : {
+    port: process.env.CACHE_SRV_PORT || 3003,
+    host: process.env.CACHE_SRV_HOST || 'localhost',
+  },
+  redis: {
+    host: process.env.REDIS_HOST || '',
+    port: process.env.REDIS_PORT || '',
+    password: process.env.REDIS_PASSWORD || '',
+  },
 };
