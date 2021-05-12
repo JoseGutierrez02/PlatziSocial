@@ -22,9 +22,10 @@ module.exports = (injectedStore) => {
 
   const upsert = async (data) => {
     const authData = {};
+    let id;
 
     if (data.id) {
-      authData.id = data.id;
+      id = data.id;
     }
 
     if (data.username) {
@@ -35,7 +36,7 @@ module.exports = (injectedStore) => {
       authData.password = await bcryptjs.hash(data.password, 5);
     }
 
-    store.upsert(TABLE, authData);
+    store.upsert(TABLE, authData, id);
   };
 
   const remove = (id) => {

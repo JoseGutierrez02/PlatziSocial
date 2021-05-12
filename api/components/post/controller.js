@@ -20,11 +20,7 @@ module.exports = (injectedStore) => {
       user,
     };
 
-    if (id) {
-      post.id = id
-    }
-
-    return store.upsert(TABLE, post);
+    return store.upsert(TABLE, post, id);
   };
 
   const remove = (id) => {

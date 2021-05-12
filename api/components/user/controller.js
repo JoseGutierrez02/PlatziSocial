@@ -21,10 +21,6 @@ module.exports = (injectedStore) => {
       username,
     };
 
-    if (id) {
-      user.id = id;
-    }
-
     if (username || password) {
       await auth.upsert({
         id,
@@ -33,7 +29,7 @@ module.exports = (injectedStore) => {
       });
     }
 
-    return store.upsert(TABLE, user);
+    return store.upsert(TABLE, user, id);
   };
 
   const follow = (from, to) => {

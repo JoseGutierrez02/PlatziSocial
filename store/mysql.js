@@ -61,18 +61,18 @@ const insert = (table, data) => {
   });
 };
 
-const update = (table, data) => {
+const update = (table, data, id) => {
   return new Promise((resolve, reject) => {
-    connection.query(`UPDATE ${table} SET ? WHERE id=?`, [data, data.id], (err, result) => {
+    connection.query(`UPDATE ${table} SET ? WHERE id=?`, [data, id], (err, result) => {
       if (err) return reject(err);
       resolve(result);
     });
   });
 };
 
-const upsert = (table, data) => {
-  if (data && data.id) {
-    return update(table, data);
+const upsert = (table, data, id) => {
+  if (data && id) {
+    return update(table, data, id);
   } else {
     return insert(table, data);
   }
